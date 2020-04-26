@@ -1,14 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Text;
 using SampSharp.GameMode.Pools;
 using SampSharp.GameMode;
-using SampSharp;
 using SampSharp.GameMode.SAMP;
 using SampSharp.GameMode.World;
 using SampSharp.GameMode.Display;
 using SampSharp.GameMode.Definitions;
 using System.Security.Cryptography;
+using MySql.Data.MySqlClient;
 
 namespace SAPC
 {
@@ -16,17 +15,6 @@ namespace SAPC
     public class Player : BasePlayer
     {
         private string password;
-        public string Password
-        {
-            get
-            {
-                return password;
-            }
-            set
-            {
-                password = value;
-            }
-        }
         private byte adminLevel;
         public byte AdminLevel
         {
@@ -266,7 +254,7 @@ namespace SAPC
             for (byte i = 1; i <= 20; i++)
                 SendClientMessage("");
         }
-        public void Register()
+        public void Register(string hashhedPassword)
         {
             MySql.Query(@$"INSERT INTO accounts
             (name,
@@ -276,7 +264,7 @@ namespace SAPC
             ('{Name}',
             '{AdminLevel}',
             '{Score}', 
-              '{Password}');");
+              '{hashhedPassword}');");
         }
         public void LoadData()
         {
@@ -339,7 +327,12 @@ namespace SAPC
                     byte[] inputPasswordBytes = Encoding.UTF8.GetBytes(loginDialogArg.InputText);
                     byte[] hashInputPasswordBytes = sha256.ComputeHash(inputPasswordBytes);
                     string hashedInputPassword = BitConverter.ToString(hashInputPasswordBytes).Replace("-", String.Empty);
-                    if (hashedInputPassword == this.Password)
+                     MySqlDataReader reader = MySql.Reader($"SELECT password FROM accounts WHERE name = '{this.Name}' LIMIT 1;");
+                    string receivedPassword = string.Empty;
+                    if (reader.Read())
+                     receivedPassword = (string)reader["password"];
+                        reader.Close();
+                    if (hashedInputPassword == password)
                     {
                         if (this.banExpiredate > DateTimeOffset.UtcNow.ToUnixTimeMilliseconds())
                         {

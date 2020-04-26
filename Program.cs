@@ -104,8 +104,7 @@ namespace SAPC
                              SHA256 sh256 = SHA256.Create();
                              byte[] hashBytes = sh256.ComputeHash(passwordBytes);
                              string hashedPassword = BitConverter.ToString(hashBytes).Replace("-", String.Empty);
-                             player.Password = hashedPassword;
-                             player.Register();
+                             player.Register(hashedPassword);
                              player.ShowLoginDialog();
                              player.SendClientMessage($"{Color.Yellow}Account registered! Now login with your password.");
                        
