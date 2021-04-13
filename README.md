@@ -1,3 +1,16 @@
+# Requirements
+- SA-MP server of your choice (sa-mp.com to visit and download)
+- Follow SampSharp plugin setup to the downloaded SAMP server:https://sampsharp.net/
+- Both development works in Linux / Windows.
+- MySql DB provider of your choice. A mysql docker container is a good one: https://hub.docker.com/_/mysql/
+
+# Setup
+ 1. Clone the project:
+  git clone https://github.com/Hy4e/SampSharp-GameMode/edit/master/README.md
+ 2. Open the folder with the project in your favourite editor. Ex: Visual Studio (F5 key to debug and compile) / VS Code (.NET addons)
+ 3. Start SA-MP server (sa-mp.com) of your choice, load the SampSharp plugin to it.
+
+
 # SampSharp-GameMode
 Police Pursuit SA:MP GameMode written in C# using plugin SampSharp.
 
